@@ -9,6 +9,9 @@ namespace BigSchool.Models
     public class Course
     {
         public int Id { get; set; } 
+
+        public bool IsCanceled { get; set; }
+
         public ApplicationUser Lecturer { get; set; }
         [Required]
         public string LecturerId { get; set; }

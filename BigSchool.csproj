@@ -178,6 +178,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\CoursesController.cs" />
     <Compile Include="Controllers\AttendancesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
@@ -200,6 +201,10 @@
     <Compile Include="Migrations\202107011350417_addFollowingsTable.cs" />
     <Compile Include="Migrations\202107011350417_addFollowingsTable.Designer.cs">
       <DependentUpon>202107011350417_addFollowingsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107021316565_AddIsCanceledColumnToCourse.cs" />
+    <Compile Include="Migrations\202107021316565_AddIsCanceledColumnToCourse.Designer.cs">
+      <DependentUpon>202107021316565_AddIsCanceledColumnToCourse.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -226,6 +231,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\app\coursesController.js" />
+    <Content Include="Scripts\bootbox\bootbox.all.js" />
+    <Content Include="Scripts\bootbox\bootbox.all.min.js" />
+    <Content Include="Scripts\bootbox\bootbox.js" />
+    <Content Include="Scripts\bootbox\bootbox.locales.js" />
+    <Content Include="Scripts\bootbox\bootbox.locales.min.js" />
+    <Content Include="Scripts\bootbox\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="packages.config" />
@@ -281,6 +293,8 @@
     <Content Include="Views\Categories\Edit.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Course\Attending.cshtml" />
+    <Content Include="Views\Course\LecturerFollowing.cshtml" />
+    <Content Include="Views\Course\Mine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -307,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107011350417_addFollowingsTable.resx">
       <DependentUpon>202107011350417_addFollowingsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107021316565_AddIsCanceledColumnToCourse.resx">
+      <DependentUpon>202107021316565_AddIsCanceledColumnToCourse.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
