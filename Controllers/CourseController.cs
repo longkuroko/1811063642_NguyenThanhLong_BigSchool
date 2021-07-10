@@ -38,7 +38,7 @@ namespace BigSchool.Controllers
             if (!ModelState.IsValid)
             {
                 viewModel.Categories = _dbContext.Categories.ToList();
-                return View("Create", viewModel);
+                return View("CourseForm", viewModel);
             }
             var course = new Course
             {
@@ -82,14 +82,14 @@ namespace BigSchool.Controllers
             var courses = _dbContext.Attendances
                 .Where(a => a.AttendeeId == userId)
                 .Select(a => a.Course)
-                .Include(p => p.Lecturer)
-                .Include(p => p.Category).Distinct()
+                .Include(p => p.Lecturer).Distinct()
+                .Include(p => p.Category)
                 .ToList();
 
             var viewModel = new CoursesViewModel
             {
-                UpcommingCourses = courses,
-                ShowAction = User.Identity.IsAuthenticated
+               UpcommingCourses = courses,
+               ShowAction = User.Identity.IsAuthenticated
             };
 
             return View(viewModel);
@@ -126,7 +126,7 @@ namespace BigSchool.Controllers
 
             };
 
-            return View("Create", viewModel);
+            return View("CourseForm", viewModel);
         }
 
         //update
@@ -138,7 +138,7 @@ namespace BigSchool.Controllers
             if (!ModelState.IsValid)
             {
                 viewModel.Categories = _dbContext.Categories.ToList();
-                return View("Create", viewModel);
+                return View("CourseForm", viewModel);
             }
             var userId = User.Identity.GetUserId();
             var course = _dbContext.Courses.Single(c => c.Id == viewModel.Id && c.LecturerId == userId);
