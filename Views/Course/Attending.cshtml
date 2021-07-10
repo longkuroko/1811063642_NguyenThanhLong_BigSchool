@@ -22,7 +22,11 @@
                 <div class="details">
                     <div class="lecturer">
                         @course.Lecturer.Name
-                        @if (Model.ShowAction)
+                        @if (course.IsCanceled)
+                        {
+                            <span class="label label-warning ">Canceled</span>
+                        }
+                        @if (Model.ShowAction && !course.IsCanceled)
                         {
                             <button class="btn btn-default btn-sm js-toggle-follow" data-user-id="@course.LecturerId">Follow</button>
                         }
@@ -30,10 +34,10 @@
                     <span class="category">
                         @course.Category.Name
                     </span>
-                    @if (Model.ShowAction)
+                    @*@if (Model.ShowAction)
                     {
                         <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
-                    }
+                    }*@
                 </div>
             </li>
         }

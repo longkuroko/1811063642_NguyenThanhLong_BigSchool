@@ -15,14 +15,14 @@
     };
 
     var createAttendance = function () {
-        $.post("/api/attendances", { courseId: button.attr("data-course-id") })
+        $.post("/api/Attendances", { courseId: button.attr("data-course-id") })
             .done(done)
             .fail(fail);
     };
 
     var deleteAttendance = function () {
         $.ajax({
-            url: "/api/attendances/" + button.attr("data-course-id"),
+            url: "/api/Attendances/" + button.attr("data-course-id"),
             method: "DELETE"
         })
             .done(done)

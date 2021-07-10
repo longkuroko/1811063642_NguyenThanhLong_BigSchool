@@ -27,7 +27,7 @@ namespace BigSchool.Controllers
                 Heading = "Add Course"
                 
             };
-            return View(viewModel);
+            return View("CourseForm",viewModel);
         }
 
         [Authorize]
@@ -83,7 +83,7 @@ namespace BigSchool.Controllers
                 .Where(a => a.AttendeeId == userId)
                 .Select(a => a.Course)
                 .Include(p => p.Lecturer)
-                .Include(p => p.Category)
+                .Include(p => p.Category).Distinct()
                 .ToList();
 
             var viewModel = new CoursesViewModel
