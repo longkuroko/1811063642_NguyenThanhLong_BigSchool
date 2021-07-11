@@ -23,7 +23,14 @@
                         @course.Lecturer.Name
                         @if (Model.ShowAction)
                         {
-                            <button class="btn btn-default btn-sm js-toggle-follow" data-user-id="@course.LecturerId">Follow</button>
+                              var text = "Follow?";
+                                var btn = "";
+                                if (course.isFollowed == true)
+                                {
+                                    text = "You're Following";
+                                    btn = "btn-success";
+                                }
+                            <button class="btn btn-default btn-sm js-toggle-follow" data-user-id="@course.LecturerId">@text</button>
                         }
                     </div>
                     <span class="category">
@@ -31,7 +38,14 @@
                     </span>
                     @if (Model.ShowAction)
                     {
-                        <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
+                        var text = "Going?";
+                        var btn = "";
+                        if (course.isAttended == true)
+                        {
+                            text = "Attended";
+                            btn = "btn-success";
+                        }
+                        <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">@text</button>
                     }
                 </div>
             </li>
@@ -40,74 +54,57 @@
 </div>
 @section scripts
  {
-   
+    <script>
+        $(document).ready(() => {
+            $(".js-toggle-attendance").on("click", (e) => {
+                var button = $(e.target)
+
+                $.post("/api/attendances", { courseId: button.attr("data-course-id") })
+                    .done(() => {
+                        if (button.hasClass("btn-success")) {
+                            button
+                                .removeClass("btn-success")
+                                .text("Going?")
+                        } else {
+                            button
+                                .addClass("btn-success")
+                                .text("Attended")
+                        }
+
+                    }).fail((err) => {
+                        console.log(err.responseText)
+                        alert(err.responseJSON.Message)
+                    })
+            })
+
+            $(".js-toggle-follow").on("click", (e) => {
+                var button = $(e.target)
+
+                $.post("/api/followings", {
+                    followeeId: button.attr("data-user-id")
+                })
+                    .done(() => {
+                        if (button.hasClass("btn-success")) {
+                            button
+                                .removeClass("btn-success")
+                                .text("Follow?")
+                        } else {
+                            button
+                                .addClass("btn-success")
+                                .text("You're Following")
+                        }
+                    }).fail((err) => {
+                        console.log(err.responseText)
+                        alert(err.responseJSON.Message)
+                    })
+            })
+        })
+    </script>
+    
+    }
     @*<script>
         $(document).ready(function () {
-            $(".js-toggle-attendance").click(function (e) {
-                var button = $(e.target);
-                if (button.hasClass("btn-default")) {
-                    $.post("/api/Attendances", { courseId: button.attr("data-course-id") })
-                        .done(function () {
-                            button
-                                .removeClass("btn-default")
-                                .addClass("btn-info")
-                                .text("Going");
-                        })
-                        .fail(function () {
-                            alert("Something failed!");
-                        });
-                }
-                else {
-                    $.ajax({
-                        url: "api/Attendances/" + button.attr("data-course-id"),
-                        method: "DELETE"
-                    })
-                        .done(function () {
-                            button
-                                .removeClass("btn-info")
-                                .addClass("btn-default")
-                                .text("Going?");
-                        })
-                        .fail(function () {
-                            alert("Something failed!");
-                        });
-                }     
-            });
-            $(".js-toggle-follow").click(function (e) {
-                var button = $(e.target);
-                if (button.hasClass("btn-default")) {
-                    $.post("/api/Followings", { followeeId: button.attr("data-user-id") })
-                        .done(function () {
-                            button
-                                .text("Following");
-                        })
-                        .fail(function () {
-                            alert("Something failed!");
-                        });
-                }
-                else {
-                      $.ajax({
-                        url: "api/Followings/" + button.attr("data-user-id"),
-                        method: "DELETE"
-                    })
-                        .done(function () {
-                            button
-                                .removeClass("btn-info")
-                                .addClass("btn-default")
-                                .text("Follow");
-                        })
-                        .fail(function () {
-                            alert("Something failed!");
-                        });
-                }
-               
-            });
-
-        });
-    </script>*@
-    <script>
-        $(document).ready(function () {
-            CoursesController.init();
+            CoursesController.init(); // cái này trong sách nó hướng dẫn chạy file js á
 
             $(".js-toggle-follow").click(function (e) {
                 var button = $(e.target);
@@ -121,10 +118,11 @@
                     });
 
             });
+            
         });
 
     </script>
-}
+}*@
 
 
 

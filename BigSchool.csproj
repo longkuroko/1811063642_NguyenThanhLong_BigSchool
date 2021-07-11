@@ -184,6 +184,7 @@
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\Api\FollowingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LecturersController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DTOs\AttendanceDtos.cs" />
     <Compile Include="DTOs\FolowingDto.cs" />
@@ -218,6 +219,10 @@
     <Compile Include="Migrations\202107101237322_AddNotification2.Designer.cs">
       <DependentUpon>202107101237322_AddNotification2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107111250542_updatetime6.cs" />
+    <Compile Include="Migrations\202107111250542_updatetime6.Designer.cs">
+      <DependentUpon>202107111250542_updatetime6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -234,7 +239,8 @@
     <Compile Include="ViewModels\CoursesViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\FutureDate.cs" />
-    <Compile Include="ViewModels\LecutureFollowingViewModel.cs" />
+    <Compile Include="ViewModels\LecturersViewModel.cs" />
+    <Compile Include="ViewModels\LecturerViewModel.cs" />
     <Compile Include="ViewModels\ValidTime.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -299,15 +305,19 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Course\CourseForm.cshtml" />
+    <Content Include="Views\Course\Create.cshtml" />
     <Content Include="Views\Categories\Create.cshtml" />
     <Content Include="Views\Categories\Delete.cshtml" />
     <Content Include="Views\Categories\Details.cshtml" />
     <Content Include="Views\Categories\Edit.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Course\Attending.cshtml" />
-    <Content Include="Views\Course\LecturerFollowing.cshtml" />
     <Content Include="Views\Course\Mine.cshtml" />
+    <Content Include="Views\Lecturers\Index.cshtml" />
+    <Content Include="Views\Lecturers\Follower.cshtml" />
+    <Content Include="Views\Lecturers\Following.cshtml" />
+    <Content Include="Views\Course\Edit.cshtml" />
+    <Content Include="Views\Course\UpcommingCourse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -346,6 +356,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107101237322_AddNotification2.resx">
       <DependentUpon>202107101237322_AddNotification2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107111250542_updatetime6.resx">
+      <DependentUpon>202107111250542_updatetime6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

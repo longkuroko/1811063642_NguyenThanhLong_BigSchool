@@ -1,0 +1,64 @@
+﻿@model BigSchool.ViewModels.LecturersViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lectures</h2>
+
+<ul class="course">
+    @foreach (var item in Model.Lecturers)
+    {
+        <div style="margin-top:5px">
+            <span style="font-size:20px;margin-right:10px">
+                @item.Name
+            </span>
+
+            @if (Model.ShowAction)
+            {
+                string btn = "";
+                string text = "Follow";
+                if (item.ImFollowing)
+                {
+                    btn = "btn-success";
+                    text = "You're Following";
+                }
+                <button class="btn @btn btn-sm js-toggle-follow" data-user-id="@item.Id">@text</button>
+            }
+            <br />
+            <span style="font-size:18px;margin-right:10px">
+                Total Course: @item.CourseCount
+            </span>
+        </div>
+    }
+</ul>
+
+@section scripts
+{
+    <script>
+        $(document).ready(() => {
+            $(".js-toggle-follow").on("click", (e) => {
+                var button = $(e.target)
+
+                $.post("/api/followings", {
+                    followeeId: button.attr("data-user-id")
+                })
+                    .done(() => {
+                        if (button.hasClass("btn-success")) {
+                            button
+                                .removeClass("btn-success")
+                                .text("Follow?")
+                        } else {
+                            button
+                                .addClass("btn-success")
+                                .text("You're Following")
+                        }
+                    }).fail((err) => {
+                        console.log(err.responseText)
+                        alert(err.responseJSON.Message)
+                    })
+            })
+        })
+    </script>
+}
+

@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 using BigSchool.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace BigSchool.Controllers
 {
@@ -27,6 +28,23 @@ namespace BigSchool.Controllers
                 UpcommingCourses = upcommingCourses,
                 ShowAction = User.Identity.IsAuthenticated
             };
+
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    var userId = User.Identity.GetUserId();
+
+            //    foreach (var item in viewModel.UpcommingCourses)
+            //    {
+            //        if (_dbContext.Attendances.Any(x => x.CourseId == item.Id && x.AttendeeId == userId))
+            //        {
+            //            item.isAttended = true;
+            //        }
+            //        if (_dbContext.Followings.Any(x => x.FollowerId == userId && x.FolloweeId == item.LecturerId))
+            //        {
+            //            item.isFollowed = true;
+            //        }
+            //    }
+            //}
             return View(viewModel);
         }
 

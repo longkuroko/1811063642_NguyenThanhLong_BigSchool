@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -12,6 +13,8 @@ namespace BigSchool.Models
 
         public bool IsCanceled { get; set; }
 
+       
+
         public ApplicationUser Lecturer { get; set; }
         [Required]
         public string LecturerId { get; set; }
@@ -22,6 +25,14 @@ namespace BigSchool.Models
         public Category Category { get; set; }
         [Required]
         public int CategoryId { get; set; }
-        
+
+        [NotMapped]
+        public bool isAttended { get; set; }
+
+        [NotMapped]
+        public bool isFollowed { get; set; }
+
+
+
     }
 }

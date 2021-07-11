@@ -18,7 +18,6 @@ namespace BigSchool.Models
         public string FolloweeId { get; set; }
 
         public ApplicationUser Follower { get; set; }
-
         public ApplicationUser Followee { get; set; }
         
     }

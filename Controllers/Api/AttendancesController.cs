@@ -26,6 +26,16 @@ namespace BigSchool.Controllers
             var userId = User.Identity.GetUserId();
             if (_dbContext.Attendances.Any(a => a.AttendeeId == userId && a.CourseId == attendanceDtos.CourseId))
                 return BadRequest("The Attendance already Exists!");
+
+            if (_dbContext.Attendances.Any(x => x.AttendeeId == userId && x.CourseId == attendanceDtos.CourseId))
+            {
+                _dbContext.Attendances.Remove(_dbContext.Attendances.Where(x => x.CourseId == attendanceDtos.CourseId && x.AttendeeId == userId).FirstOrDefault());
+                _dbContext.SaveChanges();
+                return Ok("Bạn đã hủy đăng kí tham gia");
+            }
+
+
+
             var attendance = new Attendance
             {
                 CourseId = attendanceDtos.CourseId,
@@ -35,7 +45,7 @@ namespace BigSchool.Controllers
             _dbContext.Attendances.Add(attendance);
             _dbContext.SaveChanges();
 
-            return Ok();
+            return Ok("Successfully !");
         }
 
         [HttpDelete]

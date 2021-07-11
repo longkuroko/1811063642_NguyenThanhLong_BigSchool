@@ -24,6 +24,14 @@
                         @course.Lecturer.Name
                         @if (course.IsCanceled)
                         {
+                            
+                            var text = "Follow?";
+                            var btn = "";
+                            if (course.isFollowed == true)
+                            {
+                                text = "You're Following";
+                                btn = "btn-success";
+                            }
                             <span class="label label-warning ">Canceled</span>
                         }
                         @if (Model.ShowAction && !course.IsCanceled)
