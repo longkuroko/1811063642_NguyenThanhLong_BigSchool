@@ -59,39 +59,39 @@ namespace BigSchool.Controllers.Api
             return Ok();
         }
 
-        [Authorize]
-        [HttpPost]
-        public IHttpActionResult UnAttend(AttendanceDtos attendanceDtos)
-        {
-            var userId = User.Identity.GetUserId();
+        //[Authorize]
+        //[HttpPost]
+        //public IHttpActionResult UnAttend(AttendanceDtos attendanceDtos)
+        //{
+        //    var userId = User.Identity.GetUserId();
 
-            var AttendanceDel = _dbContext.Attendances.FirstOrDefault(a => a.AttendeeId == userId && a.CourseId == attendanceDtos.CourseId);
-            if(AttendanceDel != null)
-            {
-                return BadRequest("The attendance not exists !");
-            }
-            _dbContext.Attendances.Remove(AttendanceDel);
-            _dbContext.SaveChanges();
+        //    var AttendanceDel = _dbContext.Attendances.FirstOrDefault(a => a.AttendeeId == userId && a.CourseId == attendanceDtos.CourseId);
+        //    if(AttendanceDel != null)
+        //    {
+        //        return BadRequest("The attendance not exists !");
+        //    }
+        //    _dbContext.Attendances.Remove(AttendanceDel);
+        //    _dbContext.SaveChanges();
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
-        [Authorize]
-        [HttpPost]
-        public IHttpActionResult UnFollow(FolowingDto folowingDto)
-        {
-            var userId = User.Identity.GetUserId();
+        //[Authorize]
+        //[HttpPost]
+        //public IHttpActionResult UnFollow(FolowingDto folowingDto)
+        //{
+        //    var userId = User.Identity.GetUserId();
 
-            var FollowingDel = _dbContext.Followings.FirstOrDefault(a => a.FollowerId == userId && a.FolloweeId == folowingDto.FolloweeId);
-            if (FollowingDel != null)
-            {
-                return BadRequest("The Follow not exists !");
-            }
-            _dbContext.Followings.Remove(FollowingDel);
-            _dbContext.SaveChanges();
+        //    var FollowingDel = _dbContext.Followings.FirstOrDefault(a => a.FollowerId == userId && a.FolloweeId == folowingDto.FolloweeId);
+        //    if (FollowingDel != null)
+        //    {
+        //        return BadRequest("The Follow not exists !");
+        //    }
+        //    _dbContext.Followings.Remove(FollowingDel);
+        //    _dbContext.SaveChanges();
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         [HttpPut]
         public IHttpActionResult Active(int id)

@@ -11,115 +11,123 @@
         @foreach (var course in Model.UpcommingCourses)
         {
             <li>
-               
-                    <div class="date">
-                        <div class="month">
-                            @course.DateTime.ToString("MM")
-                        </div>
-                        <div class="day">
-                            @course.DateTime.ToString("dd")
-                        </div>
+
+                <div class="date">
+                    <div class="month">
+                        @course.DateTime.ToString("MM")
                     </div>
-               
-                    <div class="details">
-                        <span class="lecturer">
-                            @course.Lecturer.Name
+                    <div class="day">
+                        @course.DateTime.ToString("dd")
+                    </div>
+                </div>
 
-                            @if (Model.ShowAction)
-                            {
-                                if (Model.CheckFollowing(course.LecturerId, User.Identity.GetUserId()))
-                                {
-                                    <button id="btnFollowing" data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-un-follow">Following</button>
-                                }
-                                else
-                                {
-                                    <button id="btnFollow" data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-follow">Follow</button>
+                <div class="details">
+                    <span class="lecturer">
+                        @course.Lecturer.Name
 
-                                }
-
-                            }
-                     
-                        </span>
-                        <br />
-                        <span class="category">
-                            @course.Category.Name
-                        </span>
                         @if (Model.ShowAction)
                         {
-                            if (Model.CheckAttending(course.Id, User.Identity.GetUserId()))
+                            if (Model.CheckFollowing(course.LecturerId, User.Identity.GetUserId()))
                             {
-                                <button data-course-id="@course.Id" class="btn btn-info btn-sm js-toggle-un-attendance">Going</button>
+                                <button id="btnFollowing" data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-un-follow">Following</button>
                             }
                             else
                             {
-                                <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going ?</button>
+                                <button id="btnFollow" data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-follow">Follow</button>
+
                             }
 
                         }
-                    </div>
+
+                    </span>
+                    <br />
+                    <span class="category">
+                        @course.Category.Name
+                    </span>
+                    @if (Model.ShowAction)
+                    {
+                        if (Model.CheckAttending(course.Id, User.Identity.GetUserId()))
+                        {
+                            <button data-course-id="@course.Id" class="btn btn-info btn-sm js-toggle-un-attendance">Going</button>
+                        }
+                        else
+                        {
+                            <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going ?</button>
+                        }
+
+                    }
+                </div>
             </li>
         }
     </ul>
     @section scripts
         {
-            <script>
-                $(document).ready(function () {
-                    $(".js-toggle-attendance").click(function (e) {
-                        var button = $(e.target);
-                        $.post("/api/attendances", { courseId: button.attr("data-course-id") })
-                            .done(function () {
-                                button
-                                    .removeClass("btn-default")
-                                    .addClass("btn-info")
-                                    .text("Going");
-                            })
-                            .fail(function () {
-                                alert("Somthing failed !");
-                            });
-                    });
-                    $(".js-toggle-follow").click(function (e) {
-                        var button = $(e.target);
-                        $.post("/api/followings", { followeeId: button.attr("data-user-id") })
-                            .done(function () {
-                                button.text("Following");
-                            })
-                            .fail(function () {
-                                alert("Somthing failed !");
-                            });
-                    });
+        <script>
+            $(document).ready(function () {
+                // CoursesController.init();
+
+                $(".js-toggle-follow").click(function (e) {
+                    var button = $(e.target);
+                    $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                        .done(function () {
+                            button.text("Following");
+                        })
+                        .fail(function () {
+                            alert("Bạn đã theo dõi !");
+                        });
                 });
 
-                
-            $(".js-toggle-un-follow").click(function (e) {
-                var button = $(e.target);
-                $.post("/api/unfollow", { followeeId: button.attr("data-user-id") })
-                    .done(function () {
-                        button
-                            .text("Follow");
-                    })
-                    .fail(function () {
-                        alert("Something failed!");
-                    });
-            });
+                $(".js-toggle-attendance").click(function (e) {
+                    var button = $(e.target);
+                    $.post("/api/attendances", { courseId: button.attr("data-course-id") })
+                        .done(function () {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going");
+                        })
+                        .fail(function () {
+                            alert("Something failed !");
+                        });
+                });
 
 
-            $(".js-toggle-un-attendance").click(function (e) {
-                var button = $(e.target);
-                $.post("/api/unattend", { courseId: button.attr("data-course-id") })
-                    .done(function () {
-                        button
-                            .removeClass("btn-info")
-                            .addClass("btn-default")
-                            .text("Going ?");
-                    })
-                    .fail(function () {
-                        alert("Something failed!");
-                    });
+
+
+                $(".js-toggle-un-follow").click(function (e) {
+                    var button = $(e.target);
+                    $.post("/api/unfollow", { followeeId: button.attr("data-user-id") })
+                        .done(function () {
+                            button
+                                .text("Follow");
+                        })
+                        .fail(function () {
+                            alert("Something failed!");
+                        });
+                });
+
+                //Hủy tham gia
+                $(".js-toggle-un-attendance").click(function (e) {
+                    var button = $(e.target);
+                    $.post("/api/unattend", { courseId: button.attr("data-course-id") })
+                        .done(function () {
+                            button
+                                .removeClass("btn-info")
+                                .addClass("btn-default")
+                                .text("Going ?");
+                        })
+                        .fail(function () {
+                            alert("Something failed!");
+                        });
+                });
             });
-        });
-       
-            </script>
-        }
+
+                // Hủy theo dõi
+
+
+
+        </script>
+    }
 </div>
 
 
