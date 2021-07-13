@@ -4,127 +4,122 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-@Styles.Render("~/Content/css")
+@using Microsoft.AspNet.Identity
+<br />
 <div class="row">
     <ul class="course">
         @foreach (var course in Model.UpcommingCourses)
         {
             <li>
-                <div class="date">
-                    <div class="moth">
-                        @course.DateTime.ToString("MM")
+               
+                    <div class="date">
+                        <div class="month">
+                            @course.DateTime.ToString("MM")
+                        </div>
+                        <div class="day">
+                            @course.DateTime.ToString("dd")
+                        </div>
                     </div>
-                    <div class="day">
-                        @course.DateTime.ToString("dd")
-                    </div>
-                </div>
-                <div class="details">
-                    <div class="lecturer">
-                        @course.Lecturer.Name
+               
+                    <div class="details">
+                        <span class="lecturer">
+                            @course.Lecturer.Name
+
+                            @if (Model.ShowAction)
+                            {
+                                if (Model.CheckFollowing(course.LecturerId, User.Identity.GetUserId()))
+                                {
+                                    <button id="btnFollowing" data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-un-follow">Following</button>
+                                }
+                                else
+                                {
+                                    <button id="btnFollow" data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-follow">Follow</button>
+
+                                }
+
+                            }
+                     
+                        </span>
+                        <br />
+                        <span class="category">
+                            @course.Category.Name
+                        </span>
                         @if (Model.ShowAction)
                         {
-                              var text = "Follow?";
-                                var btn = "";
-                                if (course.isFollowed == true)
-                                {
-                                    text = "You're Following";
-                                    btn = "btn-success";
-                                }
-                            <button class="btn btn-default btn-sm js-toggle-follow" data-user-id="@course.LecturerId">@text</button>
+                            if (Model.CheckAttending(course.Id, User.Identity.GetUserId()))
+                            {
+                                <button data-course-id="@course.Id" class="btn btn-info btn-sm js-toggle-un-attendance">Going</button>
+                            }
+                            else
+                            {
+                                <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going ?</button>
+                            }
+
                         }
                     </div>
-                    <span class="category">
-                        @course.Category.Name
-                    </span>
-                    @if (Model.ShowAction)
-                    {
-                        var text = "Going?";
-                        var btn = "";
-                        if (course.isAttended == true)
-                        {
-                            text = "Attended";
-                            btn = "btn-success";
-                        }
-                        <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">@text</button>
-                    }
-                </div>
             </li>
         }
     </ul>
-</div>
-@section scripts
- {
-    <script>
-        $(document).ready(() => {
-            $(".js-toggle-attendance").on("click", (e) => {
-                var button = $(e.target)
+    @section scripts
+        {
+            <script>
+                $(document).ready(function () {
+                    $(".js-toggle-attendance").click(function (e) {
+                        var button = $(e.target);
+                        $.post("/api/attendances", { courseId: button.attr("data-course-id") })
+                            .done(function () {
+                                button
+                                    .removeClass("btn-default")
+                                    .addClass("btn-info")
+                                    .text("Going");
+                            })
+                            .fail(function () {
+                                alert("Somthing failed !");
+                            });
+                    });
+                    $(".js-toggle-follow").click(function (e) {
+                        var button = $(e.target);
+                        $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                            .done(function () {
+                                button.text("Following");
+                            })
+                            .fail(function () {
+                                alert("Somthing failed !");
+                            });
+                    });
+                });
 
-                $.post("/api/attendances", { courseId: button.attr("data-course-id") })
-                    .done(() => {
-                        if (button.hasClass("btn-success")) {
-                            button
-                                .removeClass("btn-success")
-                                .text("Going?")
-                        } else {
-                            button
-                                .addClass("btn-success")
-                                .text("Attended")
-                        }
-
-                    }).fail((err) => {
-                        console.log(err.responseText)
-                        alert(err.responseJSON.Message)
-                    })
-            })
-
-            $(".js-toggle-follow").on("click", (e) => {
-                var button = $(e.target)
-
-                $.post("/api/followings", {
-                    followeeId: button.attr("data-user-id")
-                })
-                    .done(() => {
-                        if (button.hasClass("btn-success")) {
-                            button
-                                .removeClass("btn-success")
-                                .text("Follow?")
-                        } else {
-                            button
-                                .addClass("btn-success")
-                                .text("You're Following")
-                        }
-                    }).fail((err) => {
-                        console.log(err.responseText)
-                        alert(err.responseJSON.Message)
-                    })
-            })
-        })
-    </script>
-    
-    }
-    @*<script>
-        $(document).ready(function () {
-            CoursesController.init(); // cái này trong sách nó hướng dẫn chạy file js á
-
-            $(".js-toggle-follow").click(function (e) {
+                
+            $(".js-toggle-un-follow").click(function (e) {
                 var button = $(e.target);
-                $.post("/api/Followings", { followeeId: button.attr("data-user-id") })
+                $.post("/api/unfollow", { followeeId: button.attr("data-user-id") })
                     .done(function () {
-                        button.text("Following");
-
+                        button
+                            .text("Follow");
                     })
                     .fail(function () {
-                        alert("Something failed");
+                        alert("Something failed!");
                     });
-
             });
-            
+
+
+            $(".js-toggle-un-attendance").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/unattend", { courseId: button.attr("data-course-id") })
+                    .done(function () {
+                        button
+                            .removeClass("btn-info")
+                            .addClass("btn-default")
+                            .text("Going ?");
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            });
         });
-
-    </script>
-}*@
-
-
-
+       
+            </script>
+        }
+</div>
 
 

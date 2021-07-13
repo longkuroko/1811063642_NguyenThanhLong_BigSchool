@@ -1,4 +1,5 @@
-﻿using BigSchool.Models;
+﻿using BigSchool.DTOs;
+using BigSchool.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -57,5 +58,50 @@ namespace BigSchool.Controllers.Api
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpPost]
+        public IHttpActionResult UnAttend(AttendanceDtos attendanceDtos)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var AttendanceDel = _dbContext.Attendances.FirstOrDefault(a => a.AttendeeId == userId && a.CourseId == attendanceDtos.CourseId);
+            if(AttendanceDel != null)
+            {
+                return BadRequest("The attendance not exists !");
+            }
+            _dbContext.Attendances.Remove(AttendanceDel);
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IHttpActionResult UnFollow(FolowingDto folowingDto)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var FollowingDel = _dbContext.Followings.FirstOrDefault(a => a.FollowerId == userId && a.FolloweeId == folowingDto.FolloweeId);
+            if (FollowingDel != null)
+            {
+                return BadRequest("The Follow not exists !");
+            }
+            _dbContext.Followings.Remove(FollowingDel);
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpPut]
+        public IHttpActionResult Active(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            var course = _dbContext.Courses.Single(x => x.Id == id && x.LecturerId == userId);
+            course.IsCanceled = !course.IsCanceled;
+            _dbContext.SaveChanges();
+            return Ok("Đã lưu thay đổi!");
+        }
+
     }
 }

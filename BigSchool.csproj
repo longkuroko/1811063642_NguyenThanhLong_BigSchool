@@ -180,6 +180,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\CoursesController.cs" />
     <Compile Include="Controllers\Api\AttendancesController.cs" />
+    <Compile Include="Controllers\Api\UnAttendController.cs" />
+    <Compile Include="Controllers\Api\UnfollowController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\Api\FollowingsController.cs" />
@@ -191,37 +193,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202107010815332_InitalModel.cs" />
-    <Compile Include="Migrations\202107010815332_InitalModel.Designer.cs">
-      <DependentUpon>202107010815332_InitalModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202107010854588_addAttendance.cs" />
-    <Compile Include="Migrations\202107010854588_addAttendance.Designer.cs">
-      <DependentUpon>202107010854588_addAttendance.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202107011350417_addFollowingsTable.cs" />
-    <Compile Include="Migrations\202107011350417_addFollowingsTable.Designer.cs">
-      <DependentUpon>202107011350417_addFollowingsTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202107021316565_AddIsCanceledColumnToCourse.cs" />
-    <Compile Include="Migrations\202107021316565_AddIsCanceledColumnToCourse.Designer.cs">
-      <DependentUpon>202107021316565_AddIsCanceledColumnToCourse.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202107101230342_AddNotification.cs" />
-    <Compile Include="Migrations\202107101230342_AddNotification.Designer.cs">
-      <DependentUpon>202107101230342_AddNotification.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202107101234332_AddNotification1.cs" />
-    <Compile Include="Migrations\202107101234332_AddNotification1.Designer.cs">
-      <DependentUpon>202107101234332_AddNotification1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202107101237322_AddNotification2.cs" />
-    <Compile Include="Migrations\202107101237322_AddNotification2.Designer.cs">
-      <DependentUpon>202107101237322_AddNotification2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202107111250542_updatetime6.cs" />
-    <Compile Include="Migrations\202107111250542_updatetime6.Designer.cs">
-      <DependentUpon>202107111250542_updatetime6.cs</DependentUpon>
+    <Compile Include="Migrations\202107131303185_InitialModel.cs" />
+    <Compile Include="Migrations\202107131303185_InitialModel.Designer.cs">
+      <DependentUpon>202107131303185_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -318,6 +292,7 @@
     <Content Include="Views\Lecturers\Following.cshtml" />
     <Content Include="Views\Course\Edit.cshtml" />
     <Content Include="Views\Course\UpcommingCourse.cshtml" />
+    <Content Include="Views\Course\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -336,29 +311,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202107010815332_InitalModel.resx">
-      <DependentUpon>202107010815332_InitalModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202107010854588_addAttendance.resx">
-      <DependentUpon>202107010854588_addAttendance.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202107011350417_addFollowingsTable.resx">
-      <DependentUpon>202107011350417_addFollowingsTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202107021316565_AddIsCanceledColumnToCourse.resx">
-      <DependentUpon>202107021316565_AddIsCanceledColumnToCourse.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202107101230342_AddNotification.resx">
-      <DependentUpon>202107101230342_AddNotification.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202107101234332_AddNotification1.resx">
-      <DependentUpon>202107101234332_AddNotification1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202107101237322_AddNotification2.resx">
-      <DependentUpon>202107101237322_AddNotification2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202107111250542_updatetime6.resx">
-      <DependentUpon>202107111250542_updatetime6.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202107131303185_InitialModel.resx">
+      <DependentUpon>202107131303185_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

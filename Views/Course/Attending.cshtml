@@ -7,12 +7,13 @@
 
 <h2>Attending</h2>
 <div class="row">
+    @using Microsoft.AspNet.Identity
     <ul class="course">
         @foreach (var course in Model.UpcommingCourses)
         {
             <li>
                 <div class="date">
-                    <div class="moth">
+                    <div class="month">
                         @course.DateTime.ToString("MM")
                     </div>
                     <div class="day">
@@ -20,34 +21,77 @@
                     </div>
                 </div>
                 <div class="details">
-                    <div class="lecturer">
+                    <span class="lecturer">
                         @course.Lecturer.Name
                         @if (course.IsCanceled)
                         {
-                            
-                            var text = "Follow?";
-                            var btn = "";
-                            if (course.isFollowed == true)
-                            {
-                                text = "You're Following";
-                                btn = "btn-success";
-                            }
-                            <span class="label label-warning ">Canceled</span>
+                            <span class="label label-warning">Canceled</span>
                         }
                         @if (Model.ShowAction && !course.IsCanceled)
                         {
-                            <button class="btn btn-default btn-sm js-toggle-follow" data-user-id="@course.LecturerId">Follow</button>
+                            if (Model.CheckFollowing(course.LecturerId, User.Identity.GetUserId()))
+                            {
+                                <button id="btnFollowing" data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-un-follow">Following</button>
+                            }
+                            else
+                            {
+                                <button id="btnFollow" data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-follow">Follow</button>
+
+                            }
                         }
-                    </div>
+                    </span>
+                    <br />
                     <span class="category">
                         @course.Category.Name
                     </span>
-                    @*@if (Model.ShowAction)
-                    {
-                        <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
-                    }*@
+                 
                 </div>
             </li>
         }
     </ul>
 </div>
+@section scripts
+{
+    <script>
+        $(document).ready(() => {
+            $(".js-toggle-attendance").on("click", (e) => {
+                var button = $(e.target)
+                $.post("/api/attendances", { courseId: button.attr("data-course-id") })
+                    .done(() => {
+                        if (button.hasClass("btn-success")) {
+                            button
+                                .removeClass("btn-success")
+                                .text("Going?")
+                        } else {
+                            button
+                                .addClass("btn-success")
+                                .text("Attended")
+                        }
+                    }).fail((err) => {
+                        console.log(err.responseText)
+                        alert(err.responseJSON.Message)
+                    })
+            })
+            $(".js-toggle-follow").on("click", (e) => {
+                var button = $(e.target)
+                $.post("/api/followings", {
+                    followeeId: button.attr("data-user-id")
+                })
+                    .done(() => {
+                        if (button.hasClass("btn-success")) {
+                            button
+                                .removeClass("btn-success")
+                                .text("Follow?")
+                        } else {
+                            button
+                                .addClass("btn-success")
+                                .text("You're Following")
+                        }
+                    }).fail((err) => {
+                        console.log(err.responseText)
+                        alert(err.responseJSON.Message)
+                    })
+            })
+        })
+    </script>
+}

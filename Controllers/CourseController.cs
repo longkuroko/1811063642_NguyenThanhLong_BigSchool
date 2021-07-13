@@ -18,21 +18,31 @@ namespace BigSchool.Controllers
         {
             _dbContext = new Models.ApplicationDbContext();
         }
-        // GET: Course
+
+        public ActionResult Details(int id)
+        {
+            var viewModel = _dbContext.Courses.Include(x => x.Category).Include(x => x.Lecturer).Where(x => x.Id == id).FirstOrDefault();
+            if (viewModel == null)
+                return HttpNotFound();
+            return View(viewModel);
+        }
+
+
+
+
         public ActionResult Create()
         {
-            //var viewModel = new CourseViewModel
-            //{
-            //    Categories = _dbContext.Categories.ToList(),
-            //    Heading = "Add Course"
-
-            //};
-            //return View("CourseForm",viewModel);
-            var viewModel = new CourseViewModel();
-            viewModel.Categories = _dbContext.Categories.ToList();
+            var viewModel = new CourseViewModel
+            {
+                Categories = _dbContext.Categories.ToList()
+              
+            };
             return View(viewModel);
 
+
         }
+
+
 
         [Authorize]
         [HttpPost]
@@ -42,7 +52,7 @@ namespace BigSchool.Controllers
             if (!ModelState.IsValid)
             {
                 viewModel.Categories = _dbContext.Categories.ToList();
-                return View("CourseForm", viewModel);
+                return View(viewModel);
             }
             var course = new Course
             {
@@ -54,7 +64,7 @@ namespace BigSchool.Controllers
             _dbContext.Courses.Add(course);
             _dbContext.SaveChanges();
 
-            return RedirectToAction("Mine", "Course");
+            return RedirectToAction("Index","Home");
         }
 
 
@@ -64,37 +74,54 @@ namespace BigSchool.Controllers
             var userId = User.Identity.GetUserId();
 
             var courses = _dbContext.Attendances
-                 .Where(a => a.AttendeeId == userId)
-                 .Select(a => a.Course).Where(x => !x.IsCanceled && x.DateTime > DateTime.Now).OrderBy(x => x.DateTime)
-                 .Include(l => l.Lecturer)
-                 .Include(l => l.Category)
-                 .ToList();
-
-            foreach (var item in courses)
-            {
-                item.isAttended = true;
-            }
-
+                .Where(a => a.AttendeeId == userId)
+                .Select(a => a.Course)
+                .Include(l => l.Lecturer)
+                .Include(l => l.Category)
+                .ToList();
             var viewModel = new CoursesViewModel
             {
                 UpcommingCourses = courses,
                 ShowAction = User.Identity.IsAuthenticated
             };
 
-            foreach (var item in viewModel.UpcommingCourses)
-            {
-                if (_dbContext.Attendances.Any(x => x.CourseId == item.Id && x.AttendeeId == userId))
-                {
-                    item.isAttended = true;
-                }
-                if (_dbContext.Followings.Any(x => x.FollowerId == userId && x.FolloweeId == item.LecturerId))
-                {
-                    item.isFollowed = true;
-                }
-            }
 
             return View(viewModel);
         }
+        //public ActionResult Attending()
+        //{
+        //    var userId = User.Identity.GetUserId();
+        //    var courses = _dbContext.Attendances
+        //        .Where(a => a.AttendeeId == userId)
+        //        .Select(a => a.Course).Where(x => !x.IsCanceled && x.DateTime > DateTime.Now).OrderBy(x => x.DateTime)
+        //        .Include(l => l.Lecturer)
+        //        .Include(l => l.Category)
+        //        .ToList();
+
+        //    foreach (var item in courses)
+        //    {
+        //        item.isAttended = true;
+        //    }
+
+        //    var viewModel = new CoursesViewModel
+        //    {
+        //        UpcommingCourses = courses,
+        //        ShowAction = User.Identity.IsAuthenticated
+        //    };
+
+        //    foreach (var item in viewModel.UpcommingCourses)
+        //    {
+        //        if (_dbContext.Attendances.Any(x => x.CourseId == item.Id && x.AttendeeId == userId))
+        //        {
+        //            item.isAttended = true;
+        //        }
+        //        if (_dbContext.Followings.Any(x => x.FollowerId == userId && x.FolloweeId == item.LecturerId))
+        //        {
+        //            item.isFollowed = true;
+        //        }
+        //    }
+        //    return View(viewModel);
+        //}
         [Authorize]
         public  ActionResult UpcommingCourse()
         {
@@ -151,9 +178,9 @@ namespace BigSchool.Controllers
                 viewModel.Categories = _dbContext.Categories.ToList();
                 return View(viewModel);
             }
-            //var userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId();
             var course = _dbContext.Courses.Find(viewModel.Id);
-            course.LecturerId = User.Identity.GetUserId();
+           
             course.Place = viewModel.Place;
             course.DateTime = viewModel.GetDateTime();
             course.CategoryId = viewModel.Category;
@@ -161,5 +188,9 @@ namespace BigSchool.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
+
+      
+
+
     }
 }

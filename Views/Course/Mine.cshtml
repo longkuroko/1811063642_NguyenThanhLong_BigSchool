@@ -6,61 +6,67 @@
     }
 
     <h2>Mine</h2>
-    <ul class="course" style="margin-top:20px">
-        @foreach (var course in Model.UpcommingCourses)
-        {
-            <li>
-                <div class="date">
-                    <div class="moth">
-                        @course.DateTime.ToString("MM")
-                    </div>
-                    <div class="day">
-                        @course.DateTime.ToString("dd")
-                    </div>
-                </div>
-                <div class="details">
-                    <div class="lecturer">
-                        @course.Lecturer.Name
-                        <span class="category">
-                            @course.Category.Name                          
+    <div class="row">
+        <ul class="course">
+            @foreach (var course in Model.UpcommingCourses)
+            {
+                <li>
+                    <a href="/Course/Details/@course.Id">
+                        <div class="date">
+                            <div class="month">
+                                @course.DateTime.ToString("MM")
+                            </div>
+                            <div class="day">
+                                @course.DateTime.ToString("dd")
+                            </div>
+                        </div>
+                    </a>
+                    <div class="details">
+                        <span class="lecturer">
+                            @course.Lecturer.Name                            
                         </span>
+                        <br />
+                        <span class="category">
+                            @course.Category.Name
+                        </span>
+                        @if (Model.ShowAction)
+                        {
+                            var text = "Inactive";
+                            var cls = "";
+                            if (!course.IsCanceled)
+                            {
+                                text = "Active";
+                                cls = "btn-success";
+                            }
+                            <div class="action">
+                                <a href="/Course/Edit/@course.Id">Edit</a> |
+                                <button class="btn  @cls btn_active_course" data-course-id="@course.Id">@text</button>
+                            </div>
+
+                        }
                     </div>
-                </div>
-                <div class="action">
-                    <a href="@Url.Action("Edit","Course" , new { id = course.Id})">
-                        Edit
-                    </a> |
-                    <a href="#" class="js-cancel-course" data-course-id="@course.Id">Cancel</a>
-                </div>
+                </li>
+            }
+        </ul>
 
-
-            </li>
-        }
-    </ul>
-    @section scripts{
-        <script>
-            $(document).ready(function () {
-                $(".js-cancel-course").click(function (e) {
-                    e.preventDefault();
-                    var link = $(e.target);
-                    bootbox.confirm("Are you sure to cancel",
-                        function () {
+            @section scripts{
+                <script>
+                    $(document).ready(() => {
+                        $(".btn_active_course").on("click", (e) => {
+                            var btn = $(e.target)
                             $.ajax({
-                                url: "/api/Courses/" + link.attr("data-course-id"),
-                                method: "DELETE"
-                            })
-                                .done(function () {
-                                    link.parents("li").fadeOut(function () {
-                                        $(this).remove();
-                                    });
-                                })
-                                .fail(function () {
-                                    alert("Something failed!");
-                                });
-                        });
-                });
-            });
-        </script>
+                                url: "/api/Courses/" + btn.attr("data-course-id"),
+                                method: "PUT"
+                            }).done(() => {
+                                if (btn.hasClass("btn-success")) {
+                                    btn.removeClass("btn-success").text("Inactive")
+                                } else {
+                                    btn.addClass("btn-success").text("Active")
+                                }
+                            }).fail(err => alert(err.responseJSON))
+                        })
+                    })
+                </script>
 
-    }
+            }
 
