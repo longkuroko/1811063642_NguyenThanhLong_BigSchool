@@ -28,27 +28,10 @@ namespace BigSchool.Controllers
         }
 
 
-        //public ActionResult Index(string search)
-        //{
-        //    if (string.IsNullOrEmpty(search))
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    var upcommingCourses = _dbContext.Courses
-        //        .Include(s => s.Lecturer)
-        //        .Include(s => s.Category)
-        //        .Where(s =>
-        //        s.Lecturer.Name.Contains(search) &&
-        //        s.DateTime > DateTime.Now &&
-        //        s.IsCanceled == false);
-        //    var viewModel = new CoursesViewModel
-        //    {
-        //        UpcommingCourses = upcommingCourses,
-        //        ShowAction = User.Identity.IsAuthenticated,
-        //        dataSearch = search,
-        //    };
-        //    return View(viewModel);
-        //}
+        public ActionResult Index(int? page)
+        {
+            var model =
+        }
 
         public ActionResult Create()
         {

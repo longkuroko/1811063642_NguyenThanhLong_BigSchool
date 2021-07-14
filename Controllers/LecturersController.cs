@@ -37,6 +37,8 @@ namespace BigSchool.Controllers
                     CourseCount = courseCount
                 });
             }
+
+            //
             var viewModel = new LecturersViewModel
             {
                 Lecturers = lectures,
