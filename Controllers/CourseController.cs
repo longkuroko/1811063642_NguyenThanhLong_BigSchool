@@ -28,11 +28,7 @@ namespace BigSchool.Controllers
         }
 
 
-        public ActionResult Index(int? page)
-        {
-            var model =
-        }
-
+      
         public ActionResult Create()
         {
             var viewModel = new CourseViewModel
@@ -44,6 +40,7 @@ namespace BigSchool.Controllers
 
 
         }
+        //đã chấm xong
 
         [Authorize]
         [HttpPost]
