@@ -5,13 +5,13 @@
 
 }
 @using Microsoft.AspNet.Identity
-<h4>Tìm Kiếm</h4>
+<h4>Search Lecture:</h4>
 <form class="input-group w-50 float-right" action="/Search" method="get">
-    <input type="text" class="form-control" placeholder="Search" name="search" value="@Model.dataSearch" />
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  
+    <input type="text" class="form-control" placeholder="Enter Lacture" name="search" value="@Model.dataSearch" />
+    <div class="input-group-append">
+        <button type="submit">Search</button>
+    </div>
 </form>
-
 <br />
 <div class="row">
     <ul class="course">
@@ -128,12 +128,14 @@
                 });
             });
 
-                                                        // Hủy theo dõi
+                                                // Hủy theo dõi
 
 
 
         </script>
     }
 </div>
+
+
 
 

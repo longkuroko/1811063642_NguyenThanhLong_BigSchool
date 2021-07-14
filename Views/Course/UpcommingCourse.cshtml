@@ -20,10 +20,11 @@
             <div class="details">
                 <div class="lecturer">
                     @course.Lecturer.Name
-                    <span class="category">
+                 
+                </div>
+                  <span class="category">
                         @course.Category.Name
                     </span>
-                </div>
             </div>
             <div class="action">
                 <a href="@Url.Action("Edit","Course" , new { id = course.Id})">

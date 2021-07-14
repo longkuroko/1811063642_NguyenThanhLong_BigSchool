@@ -188,6 +188,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LecturersController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="DTOs\AttendanceDtos.cs" />
     <Compile Include="DTOs\FolowingDto.cs" />
     <Compile Include="Global.asax.cs">
@@ -293,6 +294,7 @@
     <Content Include="Views\Course\Edit.cshtml" />
     <Content Include="Views\Course\UpcommingCourse.cshtml" />
     <Content Include="Views\Course\Details.cshtml" />
+    <Content Include="Views\Search\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

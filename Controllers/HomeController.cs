@@ -19,21 +19,22 @@ namespace BigSchool.Controllers
         }
         public ActionResult Index()
         {
+          
             var upcommingCourses = _dbContext.Courses
                 .Include(c => c.Lecturer)
                 .Include(c => c.Category)
-                .Where(c => c.DateTime > DateTime.Now && c.IsCanceled==false);         
-            
-            var viewModel = new CoursesViewModel
-            {
-                UpcommingCourses = upcommingCourses,
-                ShowAction = User.Identity.IsAuthenticated
-            };
+                .Where(c => c.DateTime > DateTime.Now && c.IsCanceled==false);
 
+                var viewModel1 = new CoursesViewModel
+                {
+                    UpcommingCourses = upcommingCourses,
+                    ShowAction = User.Identity.IsAuthenticated
+                };
+                return View(viewModel1);
+        }                   
         
-            return View(viewModel);
-        }
-
+        
+        
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

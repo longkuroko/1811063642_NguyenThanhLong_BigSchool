@@ -28,7 +28,27 @@ namespace BigSchool.Controllers
         }
 
 
-
+        //public ActionResult Index(string search)
+        //{
+        //    if (string.IsNullOrEmpty(search))
+        //    {
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //    var upcommingCourses = _dbContext.Courses
+        //        .Include(s => s.Lecturer)
+        //        .Include(s => s.Category)
+        //        .Where(s =>
+        //        s.Lecturer.Name.Contains(search) &&
+        //        s.DateTime > DateTime.Now &&
+        //        s.IsCanceled == false);
+        //    var viewModel = new CoursesViewModel
+        //    {
+        //        UpcommingCourses = upcommingCourses,
+        //        ShowAction = User.Identity.IsAuthenticated,
+        //        dataSearch = search,
+        //    };
+        //    return View(viewModel);
+        //}
 
         public ActionResult Create()
         {
@@ -41,8 +61,6 @@ namespace BigSchool.Controllers
 
 
         }
-
-
 
         [Authorize]
         [HttpPost]
@@ -67,6 +85,8 @@ namespace BigSchool.Controllers
             return RedirectToAction("Index","Home");
         }
 
+       
+
 
         [Authorize]
         public ActionResult Attending()
@@ -84,54 +104,19 @@ namespace BigSchool.Controllers
                 UpcommingCourses = courses,
                 ShowAction = User.Identity.IsAuthenticated
             };
-
-
             return View(viewModel);
         }
-        //public ActionResult Attending()
-        //{
-        //    var userId = User.Identity.GetUserId();
-        //    var courses = _dbContext.Attendances
-        //        .Where(a => a.AttendeeId == userId)
-        //        .Select(a => a.Course).Where(x => !x.IsCanceled && x.DateTime > DateTime.Now).OrderBy(x => x.DateTime)
-        //        .Include(l => l.Lecturer)
-        //        .Include(l => l.Category)
-        //        .ToList();
-
-        //    foreach (var item in courses)
-        //    {
-        //        item.isAttended = true;
-        //    }
-
-        //    var viewModel = new CoursesViewModel
-        //    {
-        //        UpcommingCourses = courses,
-        //        ShowAction = User.Identity.IsAuthenticated
-        //    };
-
-        //    foreach (var item in viewModel.UpcommingCourses)
-        //    {
-        //        if (_dbContext.Attendances.Any(x => x.CourseId == item.Id && x.AttendeeId == userId))
-        //        {
-        //            item.isAttended = true;
-        //        }
-        //        if (_dbContext.Followings.Any(x => x.FollowerId == userId && x.FolloweeId == item.LecturerId))
-        //        {
-        //            item.isFollowed = true;
-        //        }
-        //    }
-        //    return View(viewModel);
-        //}
+       
         [Authorize]
         public  ActionResult UpcommingCourse()
         {
             var userId = User.Identity.GetUserId();
-            var courses = _dbContext.Courses
-                .Where(c => c.LecturerId == userId && c.DateTime > DateTime.Now)
-                .Include(l => l.Lecturer)
-                .Include(l => l.Category)
-                .ToList();
 
+            var courses = _dbContext.Courses
+                .Where(c => c.LecturerId == userId && c.DateTime > DateTime.Now && c.IsCanceled == false)
+                .Include(l => l.Lecturer)
+                .Include(c => c.Category)
+                .ToList();
             return View(courses);
         }
 
@@ -171,7 +156,7 @@ namespace BigSchool.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(CourseViewModel viewModel)
+        public ActionResult Edit(CourseViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
