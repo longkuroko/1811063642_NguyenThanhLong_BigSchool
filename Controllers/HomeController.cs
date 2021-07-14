@@ -22,29 +22,15 @@ namespace BigSchool.Controllers
             var upcommingCourses = _dbContext.Courses
                 .Include(c => c.Lecturer)
                 .Include(c => c.Category)
-                .Where(c => c.DateTime > DateTime.Now);
+                .Where(c => c.DateTime > DateTime.Now && c.IsCanceled==false);         
+            
             var viewModel = new CoursesViewModel
             {
                 UpcommingCourses = upcommingCourses,
                 ShowAction = User.Identity.IsAuthenticated
             };
 
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //    var userId = User.Identity.GetUserId();
-
-            //    foreach (var item in viewModel.UpcommingCourses)
-            //    {
-            //        if (_dbContext.Attendances.Any(x => x.CourseId == item.Id && x.AttendeeId == userId))
-            //        {
-            //            item.isAttended = true;
-            //        }
-            //        if (_dbContext.Followings.Any(x => x.FollowerId == userId && x.FolloweeId == item.LecturerId))
-            //        {
-            //            item.isFollowed = true;
-            //        }
-            //    }
-            //}
+        
             return View(viewModel);
         }
 

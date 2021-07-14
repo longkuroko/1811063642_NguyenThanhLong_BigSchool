@@ -44,7 +44,7 @@
                     <span class="category">
                         @course.Category.Name
                     </span>
-                 
+
                 </div>
             </li>
         }
@@ -53,45 +53,29 @@
 @section scripts
 {
     <script>
-        $(document).ready(() => {
-            $(".js-toggle-attendance").on("click", (e) => {
-                var button = $(e.target)
-                $.post("/api/attendances", { courseId: button.attr("data-course-id") })
-                    .done(() => {
-                        if (button.hasClass("btn-success")) {
-                            button
-                                .removeClass("btn-success")
-                                .text("Going?")
-                        } else {
-                            button
-                                .addClass("btn-success")
-                                .text("Attended")
-                        }
-                    }).fail((err) => {
-                        console.log(err.responseText)
-                        alert(err.responseJSON.Message)
+        $(document).ready(function () {
+            // CoursesController.init();
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        button
+                            .text("Following");
                     })
-            })
-            $(".js-toggle-follow").on("click", (e) => {
-                var button = $(e.target)
-                $.post("/api/followings", {
-                    followeeId: button.attr("data-user-id")
-                })
-                    .done(() => {
-                        if (button.hasClass("btn-success")) {
-                            button
-                                .removeClass("btn-success")
-                                .text("Follow?")
-                        } else {
-                            button
-                                .addClass("btn-success")
-                                .text("You're Following")
-                        }
-                    }).fail((err) => {
-                        console.log(err.responseText)
-                        alert(err.responseJSON.Message)
+                    .fail(function () {
+                        alert("Something failed !");
+                    });
+            });
+            $(".js-toggle-un-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/unfollow", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        button
+                            .text("Follow");
                     })
-            })
-        })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            });
     </script>
 }
