@@ -17,24 +17,53 @@ namespace BigSchool.Controllers
         {
             _dbContext = new ApplicationDbContext();
         }
-        public ActionResult Index()
+        //public ActionResult Index()
+        //{
+
+        //    var upcommingCourses = _dbContext.Courses
+        //        .Include(c => c.Lecturer)
+        //        .Include(c => c.Category)
+        //        .Where(c => c.DateTime > DateTime.Now && c.IsCanceled==false);
+
+        //        var viewModel1 = new CoursesViewModel
+        //        {
+        //            UpcommingCourses = upcommingCourses,
+        //            ShowAction = User.Identity.IsAuthenticated
+        //        };
+        //        return View(viewModel1);
+        //}                   
+
+        public ActionResult Index(String Search)
         {
-          
+
             var upcommingCourses = _dbContext.Courses
                 .Include(c => c.Lecturer)
                 .Include(c => c.Category)
-                .Where(c => c.DateTime > DateTime.Now && c.IsCanceled==false);
+                .Where(c => c.DateTime > DateTime.Now && c.IsCanceled == false);
 
-                var viewModel1 = new CoursesViewModel
-                {
-                    UpcommingCourses = upcommingCourses,
-                    ShowAction = User.Identity.IsAuthenticated
-                };
-                return View(viewModel1);
-        }                   
-        
-        
-        
+
+            if (!String.IsNullOrEmpty(Search))
+            {
+                ViewBag.Search = Search;
+                 upcommingCourses = _dbContext.Courses
+                 .Include(s => s.Lecturer)
+                 .Include(s => s.Category)
+                 .Where(s =>
+                 s.Lecturer.Name.Contains(Search) || s.Category.Name.Contains(Search) &&
+                 s.DateTime > DateTime.Now &&
+                 s.IsCanceled == false);
+            }
+
+
+            var viewModel1 = new CoursesViewModel
+            {
+                UpcommingCourses = upcommingCourses,
+                ShowAction = User.Identity.IsAuthenticated
+            };
+            return View(viewModel1);
+        }
+
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

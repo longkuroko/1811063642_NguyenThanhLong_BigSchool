@@ -13,7 +13,7 @@ namespace BigSchool.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202107131303185_InitialModel"; }
+            get { return "202107231524345_InitialModel"; }
         }
         
         string IMigrationMetadata.Source

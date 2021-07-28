@@ -28,7 +28,8 @@ namespace BigSchool.Controllers
         }
 
 
-      
+
+
         public ActionResult Create()
         {
             var viewModel = new CourseViewModel
